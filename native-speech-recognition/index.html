@@ -19,13 +19,30 @@
   words.appendChild(p);
 
   recognition.addEventListener('result', e =>{
-    console.log(e.results)
     const transcript = Array.from(e.results)
-     .map(result = result[0])
+     .map(result => result[0])
+     .map(result => result.transcript)
+     .join('')
+
+    p.textContent = transcript;
+    if(e.results[0].isFinal){
+      p=document.createElement('p')
+      words.appendChild(p)
+    }
+    //checks time
+    if(transcript.includes("the time")){
+      let s =new Date().toLocaleString()
+      const dateField = document.createElement("p");
+      dateField.innerText = s.split('.')[0].split('T').join('');
+      // Append to body:
+      words.appendChild(dateField);
+
+    }
+   
     
     console.log(transcript)
   })
-  
+  recognition.addEventListener("end", recognition.start)
   recognition.start();
 </script>
 
